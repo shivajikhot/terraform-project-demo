@@ -44,8 +44,10 @@ jobs:
       - name: Initialize Terraform
         run: |
           terraform init
-          if ! terraform workspace select "${{ env.TF_WORKSPACE }}"; then
-            terraform workspace new "${{ env.TF_WORKSPACE }}"
+          if [ "$(terraform workspace show)" != "${{ env.TF_WORKSPACE }}" ]; then
+            if ! terraform workspace select "${{ env.TF_WORKSPACE }}"; then
+              terraform workspace new "${{ env.TF_WORKSPACE }}"
+            fi
           fi
 
       # Step 5: Terraform Plan
