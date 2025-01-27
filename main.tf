@@ -30,8 +30,12 @@ provider "aws" {
 resource "aws_s3_bucket" "static_content" {
   bucket = "${var.environment}-static-content"
   acl    = "private"
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "static_content_versioning" {
+  bucket = aws_s3_bucket.static_content.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
