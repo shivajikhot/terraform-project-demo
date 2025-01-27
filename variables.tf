@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "The AWS region where resources will be created"
   type        = string
-  default     = "us-east-1"  # Optional: Set a default region if needed
+  default     = "us-west-1"  # Optional: Set a default region if needed
 }
 
 # EC2 Instance variables
