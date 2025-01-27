@@ -3,7 +3,9 @@ variable "aws_region" {
 }
 
 # EC2 Instance variables
-variable "ami_id" {}
+variable "ami_id" {
+  default = "ami-0c02fb55956c7d316"
+}
 variable "instance_type" {
   default = "t2.micro"
 }
@@ -21,9 +23,17 @@ variable "rds_instance_class" {
 variable "rds_allocated_storage" {
   default = 20
 }
-variable "rds_db_name" {}
-variable "rds_username" {}
-variable "rds_password" {}
+variable "rds_db_name" {
+  default = "my_app_database"
+}
+variable "rds_username" {
+  default = "my_app"
+}
+variable "rds_password" {
+ default = "my_app12345"
+}
 
 # Environment name
-variable "environment" {}
+variable "environment" {
+ default = "staging"
+}
