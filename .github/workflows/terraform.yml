@@ -71,6 +71,6 @@ jobs:
           path: terraform-docs.md
 
       # Step 8: Apply Terraform (only for main branch pushes)
-      - name: Terraform Apply
-        if: ${{ github.ref == 'refs/heads/main' }}
+      - name: Apply Terraform
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
