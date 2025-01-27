@@ -48,10 +48,15 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -out=tfplan
-
+        
       - name: Install Terraform Docs
         run: |
-         curl -sSL https://terraform-docs.io/install.sh | sh
+         wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz         
+         tar -xvzf terraform-docs-v0.16.0-linux-amd64.tar.gz        
+         mv terraform-docs /usr/local/bin/
+        
+      - name: Verify Terraform Docs Installation
+        run: terraform-docs --version
 
 
       # Step 6: Generate Terraform Documentation
