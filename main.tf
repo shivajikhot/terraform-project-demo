@@ -17,7 +17,7 @@ resource "aws_db_instance" "db" {
   engine               = var.rds_engine
   engine_version       = var.rds_engine_version
   instance_class       = var.rds_instance_class
-  name                 = var.rds_db_name
+  db_name                 = var.rds_db_name
   username             = var.rds_username
   password             = var.rds_password
   skip_final_snapshot  = true
