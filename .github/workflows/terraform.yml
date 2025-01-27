@@ -49,6 +49,11 @@ jobs:
         id: plan
         run: terraform plan -out=tfplan
 
+      - name: Install Terraform Docs
+        run: |
+         curl -sSL https://terraform-docs.io/install.sh | sh
+
+
       # Step 6: Generate Terraform Documentation
       - name: Generate Terraform Docs
         run: terraform-docs markdown table . > terraform-docs.md
