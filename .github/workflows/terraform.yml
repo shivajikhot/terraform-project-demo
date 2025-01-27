@@ -40,11 +40,14 @@ jobs:
         with:
           terraform_version: 1.5.6
 
-      # Step 4: Initialize Terraform with workspaces
+     # Step 4: Initialize Terraform with workspaces
       - name: Initialize Terraform
         run: |
           terraform init
-          terraform workspace select ${{ env.TF_WORKSPACE }} || terraform workspace new ${{ env.TF_WORKSPACE }}
+          if ! terraform workspace select ${{ env.TF_WORKSPACE }}; then
+            terraform workspace new ${{ env.TF_WORKSPACE }}
+          fi
+
 
       # Step 5: Terraform Plan
       - name: Terraform Plan
