@@ -3,13 +3,13 @@ provider "aws" {
 }
 
 # EC2 Instance
-#resource "aws_instance" "web" {
-#  ami           = var.ami_id
-#  instance_type = var.instance_type
-#  tags = {
-#    Name = "${var.environment}-web-server"
-#  }
-#}
+resource "aws_instance" "web" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  tags = {
+    Name = "${terraform.workspace}-web-server"
+  }
+}
 
 # RDS Instance
 #resource "aws_db_instance" "db" {
@@ -22,7 +22,7 @@ provider "aws" {
 #  password             = var.rds_password
 #  skip_final_snapshot  = true
 #  tags = {
-#    Name = "${var.environment}-database"
+#    Name = "${terraform.workspace}-database"
 #  }
 #}
 
