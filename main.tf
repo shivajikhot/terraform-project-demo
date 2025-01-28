@@ -28,7 +28,7 @@ provider "aws" {
 
 # S3 Bucket
 resource "aws_s3_bucket" "static_content" {
-  bucket = "${var.environment}-static-content-demo"
+  bucket = "${terraform.workspace}-static-content-demo"
   acl    = "private"
 }
 
