@@ -56,24 +56,20 @@ jobs:
          fi
         continue-on-error: true
 
-      # Step 5: Terraform Plan
+      # Terraform Plan
       - name: Terraform Plan
         id: plan
         run: terraform plan -out=tfplan
-        if: ${{ github.event_name == 'pull_request' }}
+       
       - name: Install Terraform Docs
         run: |
          wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz         
          tar -xvzf terraform-docs-v0.16.0-linux-amd64.tar.gz        
          mv terraform-docs /usr/local/bin/
-        
-      - name: Verify Terraform Docs Installation
-        run: terraform-docs --version
-
-
-      # Step 6: Generate Terraform Documentation
         if: ${{ github.event_name == 'pull_request' }}
+
       - name: Generate Terraform Docs
+        if: ${{ github.event_name == 'pull_request' }}
         run: terraform-docs markdown table . > terraform-docs.md
 
       # Step 7: Comment on Pull Request
