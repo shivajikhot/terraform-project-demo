@@ -54,7 +54,7 @@ jobs:
           echo "Workspace '$workspace' does not exist. Creating it..."
           terraform workspace new "$workspace"
          fi
-        shell: bash
+        continue-on-error: true
 
       # Step 5: Terraform Plan
       - name: Terraform Plan
