@@ -1,0 +1,87 @@
+name: Terraform Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: "us-west-1"
+
+permissions:
+  contents: write
+
+jobs:
+  terraform:
+    name: Terraform Workflow
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Step 3: Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.6
+
+      # Step 4: Initialize Terraform
+      - name: Initialize Terraform
+        run: |
+          terraform init
+
+      - name: Select Workspace Based on Branch Name
+        run: |
+           # Set workspace based on the branch name (e.g., feature/staging, feature/production)
+           workspace="${{ github.head_ref || github.ref_name }}"
+           if terraform workspace list | grep -q "$workspace"; then
+           terraform workspace select "$workspace"
+           else
+           terraform workspace new "$workspace"
+           fi
+        shell: bash
+
+      # Step 5: Terraform Plan
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan
+        
+      - name: Install Terraform Docs
+        run: |
+         wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz         
+         tar -xvzf terraform-docs-v0.16.0-linux-amd64.tar.gz        
+         mv terraform-docs /usr/local/bin/
+        
+      - name: Verify Terraform Docs Installation
+        run: terraform-docs --version
+
+
+      # Step 6: Generate Terraform Documentation
+      - name: Generate Terraform Docs
+        run: terraform-docs markdown table . > terraform-docs.md
+
+      # Step 7: Comment on Pull Request
+      - name: Comment Terraform Docs
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          path: terraform-docs.md
+
+      # Step 8: Apply Terraform (only for main branch pushes)
+      - name: Apply Terraform
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
