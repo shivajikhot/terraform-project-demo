@@ -46,6 +46,7 @@ jobs:
 
       - name: Select Workspace Based on Branch Name
         run: |
+         workspace="${{ github.head_ref || github.ref_name }}"
          if terraform workspace list | grep -qw "$workspace"; then
           echo "Workspace '$workspace' already exists. Selecting it..."
           terraform workspace select "$workspace"
