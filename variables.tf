@@ -1,16 +1,16 @@
 variable "aws_region" {
   description = "The AWS region where resources will be created"
   type        = string
-  default     = "us-west-1"  # Optional: Set a default region if needed
+  default     = "us-west-1"  
 }
 
 # EC2 Instance variables
-#variable "ami_id" {
- # default = "ami-0c02fb55956c7d316"
-#}
-#variable "instance_type" {
-#  default = "t2.micro"
-#}
+variable "ami_id" {
+  default = "ami-0c02fb55956c7d316"
+}
+variable "instance_type" {
+  default = "t2.micro"
+}
 
 # RDS Instance variables
 #variable "rds_engine" {
