@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "terraform-backend-statefil"
-    key    = "env"
+    key    = "env/${terraform.workspace}.tfstate"
     region = "us-east-1"
     encrypt = true
   }
