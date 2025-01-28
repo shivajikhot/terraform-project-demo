@@ -46,13 +46,13 @@ jobs:
 
       - name: Select Workspace Based on Branch Name
         run: |
-           # Set workspace based on the branch name (e.g., feature/staging, feature/production)
-           workspace="${{ github.head_ref || github.ref_name }}"
-           if terraform workspace list | grep -q "$workspace"; then
-           terraform workspace select "$workspace"
-           else
-           terraform workspace new "$workspace"
-           fi
+         if terraform workspace list | grep -qw "$workspace"; then
+          echo "Workspace '$workspace' already exists. Selecting it..."
+          terraform workspace select "$workspace"
+         else
+          echo "Workspace '$workspace' does not exist. Creating it..."
+          terraform workspace new "$workspace"
+         fi
         shell: bash
 
       # Step 5: Terraform Plan
