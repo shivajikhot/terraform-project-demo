@@ -6,7 +6,7 @@ variable "aws_region" {
 
 # EC2 Instance variables
 variable "ami_id" {
-  default = "ami-0c02fb55956c7d316"
+  default = "ami-07d2649d67dbe8900"
 }
 variable "instance_type" {
   default = "t2.micro"
