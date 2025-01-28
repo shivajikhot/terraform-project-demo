@@ -60,7 +60,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -out=tfplan
-        
+        if: ${{ github.event_name == 'pull_request' }}
       - name: Install Terraform Docs
         run: |
          wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz         
@@ -72,6 +72,7 @@ jobs:
 
 
       # Step 6: Generate Terraform Documentation
+        if: ${{ github.event_name == 'pull_request' }}
       - name: Generate Terraform Docs
         run: terraform-docs markdown table . > terraform-docs.md
 
